@@ -22,9 +22,10 @@ public class Graphics extends Canvas implements Runnable {
     private Thread thread;
     private boolean running = false;
     private int fps = 60;
-    private int ups = 10;
+    private int ups = 60;
 
     private Sprite s;
+    private Sprite s2;
 
     public Graphics(int w, int h) {
         this.width = w;
@@ -42,6 +43,7 @@ public class Graphics extends Canvas implements Runnable {
         frame.setVisible(true);
 
         s = new Sprite(32,32);
+        s2 = new Sprite(32,32);
     }
 
     private void draw() {
@@ -57,19 +59,29 @@ public class Graphics extends Canvas implements Runnable {
         bs.show();
     }
 
+    private int t = 0;
     private void update() {
         for (int i = 0 ; i < pixels.length ; i++) {
             pixels[i] = 0;
         }
 
-        int x = (int)(Math.random()*(width-32));
-        int y = (int)(Math.random()*(height-32));
+        int x = (int)(300 + Math.sin(t) * 50);
+        int y = (int)(300 + Math.cos(t) * 50);
+        int x2 = (int)(300 + Math.sin(t+180) * 50);
+        int y2 = (int)(300 + Math.cos(t+180) * 50);
 
         for (int i = 0 ; i < s.getHeight() ; i++) {
             for (int j = 0 ; j < s.getWidth() ; j++) {
                 pixels[(y+i)*width + x+j] = s.getPixels()[i*s.getWidth()+j];
             }
         }
+        for (int i = 0 ; i < s2.getHeight() ; i++) {
+            for (int j = 0 ; j < s2.getWidth() ; j++) {
+                pixels[(y2+i)*width + x2+j] = s2.getPixels()[i*s2.getWidth()+j];
+            }
+        }
+
+        t++;
     }
 
     public synchronized void start() {
